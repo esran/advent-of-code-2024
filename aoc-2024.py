@@ -11,7 +11,7 @@ def load_file(path: str) -> list[str]:
 
     print(f"loading: {path}")
     with open(path, "r") as f:
-        return f.readlines()
+        return f.read().splitlines()
 
 
 def import_module(module_name: str):
