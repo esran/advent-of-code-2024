@@ -3,6 +3,7 @@
 import os
 import argparse
 import sys
+import datetime
 
 
 def load_file(path: str) -> list[str]:
@@ -41,8 +42,11 @@ def main():
 
     for func in ["func1", "func2"]:
         try:
+            start = datetime.datetime.now()
             result = getattr(day_module, func)(data)
-            print(f"{day} {func} = {result}")
+            end = datetime.datetime.now()
+            duration = end - start
+            print(f"{day} {func} = {result} [{duration}]")
         except AttributeError:
             pass
 
