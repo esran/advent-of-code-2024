@@ -4,6 +4,7 @@ import os
 import argparse
 import sys
 import datetime
+import logging
 
 
 def load_file(path: str) -> list[str]:
@@ -29,7 +30,13 @@ def main():
     # Argument parsing to select the day to run for
     parser = argparse.ArgumentParser(prog="aoc-2024", description="Advent of Code 2024")
     parser.add_argument("day")
+    parser.add_argument("-t", "--test", action=argparse.BooleanOptionalAction)
+    parser.add_argument("-p", "--part", default=1, type=int)
+    parser.add_argument("-d", "--debug", action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
+
+    log_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(level=log_level)
 
     if not args.day:
         raise ValueError("Required argument 'day' missing")
@@ -38,7 +45,10 @@ def main():
 
     day_module = import_module(day)
 
-    data = load_file(f"{day}.input")
+    if args.test:
+        data = load_file(f"{day}.test{args.part}.input")
+    else:
+        data = load_file(f"{day}.input")
 
     for func in ["func1", "func2"]:
         try:
